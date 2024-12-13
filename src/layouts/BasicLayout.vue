@@ -24,8 +24,6 @@
 </template>
 <script setup lang="ts">
 
-import {showToast} from "vant";
-import {ref} from "vue";
 import {useRouter} from "vue-router";
 
 const router = useRouter();
@@ -37,11 +35,14 @@ const onClickRight = () => {
   })
 };
 // const active = ref('index');
-const onChange = (index) => showToast(`标签 ${index}`);
+const onChange = (index) => console.log(`标签 ${index}`);
 </script>
 
 <style scoped>
 #basic-layout {
   //width: 100vh;
+}
+#content{
+  padding-bottom: 50px;
 }
 </style>

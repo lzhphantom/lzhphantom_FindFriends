@@ -1,6 +1,6 @@
 <template>
   <van-cell title="用户名" is-link @click="edit('username','用户名',user.username)" :value="user.username"/>
-  <van-cell title="账号" is-link @click="edit('userAccount','账号',user.userAccount)" :value="user.userAccount" />
+  <van-cell title="账号" is-link @click="edit('loginAccount','账号',user.loginAccount)" :value="user.loginAccount"/>
   <van-cell title="头像" is-link @click="edit('avatarUrl','头像',user.avatarUrl)">
     <van-image
         round
@@ -15,14 +15,17 @@
   <van-cell title="注册时间" :value="user.createTime?.toLocaleString()"/>
 </template>
 <script setup lang="ts">
-import {ref} from "vue";
+import {onMounted, ref} from "vue";
 import {UserType} from "../models/user";
 import {useRouter} from "vue-router";
+import request from "../plugins/request.ts";
+import {showFailToast} from "vant";
+import {getCurrentUser} from "../services/user.ts";
 
 const user = ref<UserType>({
   id: 1,
   username: 'admin',
-  userAccount: 'admin',
+  loginAccount: 'admin',
   avatarUrl: 'https://fastly.jsdelivr.net/npm/@vant/assets/cat.jpeg',
   email: 'admin@qq.com',
   phone: '123456789',
@@ -33,7 +36,7 @@ const user = ref<UserType>({
   role: 1
 })
 const router = useRouter();
-const edit = (key: string,label:string, value: string) => {
+const edit = (key: string, label: string, value: string) => {
   router.push({
     path: '/user/edit',
     query: {
@@ -44,6 +47,10 @@ const edit = (key: string,label:string, value: string) => {
   })
   console.log(key, value)
 }
+
+onMounted(async () => {
+  user.value = await getCurrentUser();
+})
 </script>
 <style scoped>
 

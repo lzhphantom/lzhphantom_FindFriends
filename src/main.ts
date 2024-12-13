@@ -1,14 +1,15 @@
 import {createApp} from 'vue'
 import './style.css'
 import App from './App.vue'
-import {Col, Icon, NavBar, Row, Tabbar, TabbarItem, Image
+import {Col, Icon, NavBar, Row, Tabbar, TabbarItem, Image,Button,Card,Empty,Toast
     ,Tag, Divider, TreeSelect, Space, Cell, CellGroup} from "vant";
 import 'vant/lib/index.css';
 import router from "./router";
 
 const app = createApp(App);
 app.use(NavBar).use(Icon).use(Space).use(Cell)
-    .use(CellGroup).use(Image)
+    .use(CellGroup).use(Image).use(Button)
+    .use(Card).use(Empty).use(Toast)
     .use(Tabbar).use(TabbarItem).use(Row)
     .use(Col).use(Tag).use(Divider)
     .use(TreeSelect);

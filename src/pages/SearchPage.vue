@@ -5,8 +5,13 @@
         show-action
         placeholder="请输入搜索标签"
         @search="onSearch"
-        @cancel="onCancel"
-    />
+    >
+      <template #action>
+        <van-button round size="small" type="success" @click="searchUser">搜索</van-button>
+        <van-divider vertical/>
+        <van-button round size="small" @click="onCancel">取消</van-button>
+      </template>
+    </van-search>
   </form>
 
   <van-divider content-position="left">已选标签</van-divider>
@@ -15,7 +20,7 @@
       {{ item }}
     </van-tag>
   </van-space>
-  <div v-if="activeIds.length===0">请选择标签</div>
+  <div v-if="activeIds.length===0" class="select-tag-placeholder">请选择标签</div>
   <van-divider content-position="left">标签组</van-divider>
   <van-tree-select
       v-model:active-id="activeIds"
@@ -26,6 +31,7 @@
 </template>
 <script setup lang="ts">
 import {ref} from "vue";
+import {useRouter} from "vue-router";
 
 const close = (item: any) => {
   activeIds.value = activeIds.value.filter(id => id !== item)
@@ -40,6 +46,15 @@ const onSearch = () => {
     return tempParent;
   })
 };
+const router = useRouter()
+const searchUser = () => {
+  router.push({
+    path:'/user/list',
+    query:{
+      tags: activeIds.value
+    }
+  })
+}
 const onCancel = () => {
   search.value = '';
   tagList.value = originTagList;
@@ -76,5 +91,10 @@ const originTagList = [
 const tagList = ref(originTagList);
 </script>
 <style scoped>
-
+.select-tag-placeholder{
+  text-align: center;
+  color: #959494;
+  font-size: 14px;
+  font-weight: bolder;
+}
 </style>

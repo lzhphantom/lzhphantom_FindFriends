@@ -18,8 +18,11 @@
 
 </template>
 <script setup lang="ts">
-import {useRoute} from "vue-router";
+import {useRoute, useRouter} from "vue-router";
 import {onMounted, ref} from "vue";
+import request from "../plugins/request.ts";
+import {showSuccessToast} from "vant";
+import {getCurrentUser} from "../services/user.ts";
 
 const route = useRoute();
 const editUser = ref({
@@ -27,12 +30,22 @@ const editUser = ref({
   editValue: route.query.value,
   label: route.query.label,
 })
-const onSubmit = (values) => {
-  console.log('submit', values);
+const router = useRouter();
+let currentUser;
+const onSubmit = async () => {
+  const res = await request.post('/user/update', {
+    id: currentUser.id,
+    [editUser.value.editKey]: editUser.value.editValue
+  })
+  if (res.code === 0 && res.data) {
+    showSuccessToast('修改成功')
+    router.back();
+  }
 };
 
-onMounted(()=>{
-
+onMounted(async () => {
+  currentUser = await getCurrentUser();
+  console.log(currentUser)
 })
 </script>
 <style scoped>
