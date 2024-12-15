@@ -23,10 +23,10 @@ onMounted(async () => {
   }).catch((err) => {
     showFailToast('请求失败')
   })
-  userList.value = result.data;
-  userList.value.forEach(item => {
+  result.data.records.forEach(item=>{
     item.tags = JSON.parse(item.tags)
   })
+  userList.value = result.data.records;
 })
 </script>
 <style scoped>

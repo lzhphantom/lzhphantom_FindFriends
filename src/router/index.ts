@@ -12,6 +12,11 @@ const routes = [
         component: () => import('../pages/TeamPage.vue')
     },
     {
+        path: '/team/add',
+        name: 'teamAdd',
+        component: () => import('../pages/TeamAddPage.vue')
+    },
+    {
         path: '/user',
         name: 'user',
         component: () => import('../pages/UserPage.vue')

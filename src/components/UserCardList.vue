@@ -1,6 +1,6 @@
 <template>
   <van-card
-      v-for="item in userList"
+      v-for="item in props.userList"
       :desc="item.profile"
       :title="item.username"
       :thumb="item.avatarUrl"
@@ -21,6 +21,7 @@
 </template>
 <script setup lang="ts">
 import {UserType} from "../models/user";
+import {onMounted} from "vue";
 
 interface UserCardListProps {
   userList: UserType[]
@@ -29,6 +30,9 @@ interface UserCardListProps {
 let props = withDefaults(defineProps<UserCardListProps>(), {
   userList: []
 });
+onMounted(()=>{
+  console.log(props.userList)
+})
 </script>
 <style scoped>
 
