@@ -1,7 +1,7 @@
 <template>
 
   <van-nav-bar
-      title="标题"
+      :title="title"
       left-text="返回"
       left-arrow
       @click-left="onClickLeft"
@@ -25,8 +25,21 @@
 <script setup lang="ts">
 
 import {useRouter} from "vue-router";
+import {ref} from "vue";
+import {routes} from "../config";
 
 const router = useRouter();
+
+const DEFAULT_TITLE = 'lzhphantom交友'
+const title = ref(DEFAULT_TITLE)
+router.beforeEach((to,from,next)=>{
+  const toPath = to.path
+  const route = routes.find((item)=>{
+    return item.path === toPath
+  })
+  title.value = route.title ?? DEFAULT_TITLE
+  next()
+})
 
 const onClickLeft = () => history.back();
 const onClickRight = () => {

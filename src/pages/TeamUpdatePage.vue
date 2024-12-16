@@ -72,19 +72,12 @@
 <script setup lang="ts">
 import request from "../plugins/request.ts";
 import {showFailToast, showSuccessToast} from "vant";
-import {ref} from "vue";
-import {useRouter} from "vue-router";
+import {onMounted, ref} from "vue";
+import {useRoute, useRouter} from "vue-router";
 import dayjs from "dayjs";
 
-const initFormData = {
-  description: "",
-  expireTime: "",
-  maxNum: 10,
-  name: "",
-  password: "",
-  status: 0
-}
-const data = ref({...initFormData})
+
+const data = ref({})
 
 const showPicker = ref(false);
 const pickerValue = ref([]);
@@ -93,6 +86,17 @@ const onConfirm = ({selectedValues}) => {
   pickerValue.value = selectedValues;
   showPicker.value = false;
 };
+const route = useRoute()
+onMounted(async ()=>{
+  const res = await request.get('/team/get', {
+    params:
+        {id: route.query.id}
+  })
+  if (res.code === 0 && res.data){
+    data.value = res.data
+    data.value.expireTime = dayjs(data.value.expireTime).format('YYYY/MM/DD')
+  }
+})
 
 const router = useRouter()
 const onSubmit = async () => {
@@ -102,15 +106,14 @@ const onSubmit = async () => {
   }
 
   data.value.expireTime = dayjs(data.value.expireTime).format('YYYY-MM-DDTHH:mm:ss')
-  const res = await request.post('/team/addTeam', data.value)
-  console.log(res);
+  const res = await request.post('/team/update', data.value)
   if (res.code === 0 && res.data) {
     router.push({
       path: '/team',
       replace: true
     })
   } else {
-    showFailToast('创建队伍失败')
+    showFailToast('更新队伍失败')
   }
 };
 </script>

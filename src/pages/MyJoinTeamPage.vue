@@ -1,5 +1,5 @@
 <template>
-  <div id="teamPage">
+  <div id="myJoinTeamPage">
     <van-search
         v-model="search.searchText"
         placeholder="请输入搜索队伍"
@@ -8,9 +8,6 @@
         @clear="onSearch"
     >
     </van-search>
-    <van-button type="primary" size="large" @click="doJoinTeam">
-      创建队伍
-    </van-button>
     <team-card-list :team-list="teamList" />
   </div>
 </template>
@@ -36,7 +33,7 @@ const doJoinTeam = () => {
 }
 const teamList = ref<TeamType[]>([])
 const loadList = async (payload={}) => {
-  const res = await request.post('/team/list', payload)
+  const res = await request.get('/team/list/my/join')
   if (res.code === 0 && res.data) {
     teamList.value = res.data
   } else {
@@ -49,7 +46,7 @@ onMounted(() => {
 })
 </script>
 <style scoped>
-#teamPage {
+#myJoinTeamPage {
   padding: 20px;
 }
 </style>

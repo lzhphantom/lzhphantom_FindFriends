@@ -24,13 +24,18 @@
         <div>过期时间：{{ dayjs(item.expireTime).format('YYYY-MM-DD') }}</div>
       </template>
       <template #footer>
-        <van-button size="mini" type="success" @click="doJoinTeam(item)">加入队伍</van-button>
+        <van-button v-if="(currentUser.id !== item.ownerUserId) && !(item.userList.find(user => user.id === currentUser.id))" size="mini" type="success" @click="doJoinTeam(item)">
+          加入队伍
+        </van-button>
         <van-button size="mini" type="primary">查看详情</van-button>
-        <van-button size="mini" type="danger">举报</van-button>
+        <van-button size="mini" type="warning" @click="toUpdate(item.id)" v-if="currentUser.id === item.ownerUserId">更新队伍</van-button>
+        <van-button size="mini" type="danger" v-if="currentUser.id === item.ownerUserId" @click="deleteTeam(item.id)">解散队伍</van-button>
+        <van-button size="mini" type="danger" v-if="item.userList.find(user => user.id === currentUser.id)" @click="quitTeam(item.id)">退出队伍</van-button>
       </template>
     </van-card>
     <van-empty image="search" description="暂无数据" v-if="teamList.length===0"/>
-    <van-dialog v-model:show="show" title="加密房间" show-cancel-button @confirm="doJoinTeamByPass" @open="temp.password=''">
+    <van-dialog v-model:show="show" title="加密房间" show-cancel-button @confirm="doJoinTeamByPass"
+                @open="temp.password=''">
       <template #default>
         <van-field v-model="temp.password" label="密码" placeholder="请输入密码" type="password"/>
       </template>
@@ -45,20 +50,28 @@ import {teamStatusEnum} from "../constants/team.ts";
 import dayjs from "dayjs";
 import request from "../plugins/request.ts";
 import {showFailToast, showSuccessToast} from "vant";
+import {getCurrentUser} from "../services/user.ts";
+import router from "../router";
 
 interface TeamCardListProps {
   teamList: TeamType[]
 }
 
+const currentUser = ref({})
 let props = withDefaults(defineProps<TeamCardListProps>(), {
   teamList: []
 });
-onMounted(() => {
+onMounted(async () => {
+  currentUser.value = await getCurrentUser()
 })
 const show = ref(false);
 const temp = ref({
   password: ''
 })
+/**
+ * 加入队伍
+ * @param item
+ */
 const doJoinTeam = async (item: TeamType) => {
   if (item.status === 2) {
     temp.value.id = item.id
@@ -72,6 +85,9 @@ const doJoinTeam = async (item: TeamType) => {
     showFailToast('加入队伍失败')
   }
 }
+/**
+ * 加入加密队伍
+ */
 const doJoinTeamByPass = async () => {
   if (temp.value.password.length === 0) {
     showFailToast('请输入密码')
@@ -82,6 +98,42 @@ const doJoinTeamByPass = async () => {
     showSuccessToast('加入队伍成功')
   } else {
     showFailToast('加入队伍失败')
+  }
+}
+/**
+ * 去更新队伍
+ * @param id
+ */
+const toUpdate = (id:number) => {
+  router.push({
+    path: '/team/update',
+    query: {
+      id: id
+    }
+  })
+}
+/**
+ * 删除队伍
+ * @param id
+ */
+const deleteTeam = async (id: number) => {
+  const res = await request.post('/team/delete', {id: id})
+  if (res.code === 0 && res.data) {
+    showSuccessToast('删除队伍成功')
+  } else {
+    showFailToast('删除队伍失败')
+  }
+}
+/**
+ * 退出队伍
+ * @param id
+ */
+const quitTeam = async (id: number) => {
+  const res = await request.post('/team/quit', {id: id})
+  if (res.code === 0 && res.data) {
+    showSuccessToast('退出队伍成功')
+  } else {
+    showFailToast('退出队伍失败')
   }
 }
 </script>

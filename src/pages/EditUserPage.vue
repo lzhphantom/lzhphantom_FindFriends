@@ -38,7 +38,6 @@ const onSubmit = async () => {
     [editUser.value.editKey]: editUser.value.editValue
   })
   if (res.code === 0 && res.data) {
-    showSuccessToast('修改成功')
     router.back();
   }
 };

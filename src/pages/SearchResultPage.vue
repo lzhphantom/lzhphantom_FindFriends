@@ -36,10 +36,10 @@ onMounted(async () => {
   }).catch((err) => {
     Toast.fail('请求是吧')
   })
-  userList.value = result.data;
-  userList.value.forEach(item => {
+  result.data.records.forEach(item => {
     item.tags = JSON.parse(item.tags)
   })
+  userList.value = result.data.records;
 })
 const userList = ref<UserType[]>([])
 </script>
