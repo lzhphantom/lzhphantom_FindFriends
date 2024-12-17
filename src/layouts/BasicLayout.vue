@@ -7,7 +7,7 @@
       @click-left="onClickLeft"
       @click-right="onClickRight"
   >
-    <template #right>
+    <template #right v-if="showSearch">
       <van-icon name="search" size="18"/>
     </template>
   </van-nav-bar>
@@ -32,8 +32,14 @@ const router = useRouter();
 
 const DEFAULT_TITLE = 'lzhphantom交友'
 const title = ref(DEFAULT_TITLE)
+const showSearch = ref(true)
 router.beforeEach((to,from,next)=>{
   const toPath = to.path
+  if (toPath !== '/search') {
+    showSearch.value = true
+  } else {
+    showSearch.value = false
+  }
   const route = routes.find((item)=>{
     return item.path === toPath
   })

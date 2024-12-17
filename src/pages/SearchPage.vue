@@ -30,21 +30,16 @@
 
 </template>
 <script setup lang="ts">
-import {ref} from "vue";
+import {onMounted, reactive, ref} from "vue";
 import {useRouter} from "vue-router";
+import {listTagTreeUsingGet} from "@/api/tagController.ts";
 
 const close = (item: any) => {
   activeIds.value = activeIds.value.filter(id => id !== item)
 };
 const search = ref('');
 const onSearch = () => {
-  tagList.value = originTagList.map(parentTag => {
-    const temp = [...parentTag.children];
-    const tempParent = {...parentTag}
-    tempParent.children = temp
-        .filter(item => item.text.includes(search.value))
-    return tempParent;
-  })
+  loadTagTree({tagName:search.value})
 };
 const router = useRouter()
 const searchUser = () => {
@@ -57,38 +52,22 @@ const searchUser = () => {
 }
 const onCancel = () => {
   search.value = '';
-  tagList.value = originTagList;
 };
 
 
 const activeIds = ref([]);
 const activeIndex = ref(0);
-const originTagList = [
-  {
-    text: '性别',
-    children: [
-      {text: '男', id: '男'},
-      {text: '女', id: '女'},
-    ],
-  },
-  {
-    text: '年级',
-    children: [
-      {text: '大一', id: '大一'},
-      {text: '大二', id: '大二'},
-      {text: '大三', id: '大三'},
-      {text: '大四', id: '大四'},
-    ],
-  },
-  {
-    text: '语言',
-    children: [
-      {text: '中文', id: '中文'},
-      {text: '英文', id: '英文'},
-    ],
-  },
-];
-const tagList = ref(originTagList);
+const loadTagTree = async (params={})=>{
+  const res = await listTagTreeUsingGet(params);
+  if(res.code===0 && res.data){
+    tagList.value = res.data
+  }
+}
+onMounted(()=>{
+  loadTagTree()
+})
+
+const tagList = ref<API.TagTreeVo[]>();
 </script>
 <style scoped>
 .select-tag-placeholder{

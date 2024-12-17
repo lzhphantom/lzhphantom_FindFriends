@@ -2,7 +2,7 @@ import axios from "axios";
 import {showFailToast} from "vant";
 
 const request = axios.create({
-    baseURL: 'http://192.168.1.74:8011/',
+    baseURL: 'http://192.168.1.74:8012/',
     withCredentials: true
 })
 

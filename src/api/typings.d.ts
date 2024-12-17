@@ -1,4 +1,14 @@
 declare namespace API {
+  type BaseDeleteRequest = {
+    id?: number;
+  };
+
+  type BaseResponse = {
+    code?: number;
+    data?: Record<string, any>;
+    message?: string;
+  };
+
   type BaseResponseBoolean_ = {
     code?: number;
     data?: boolean;
@@ -8,6 +18,18 @@ declare namespace API {
   type BaseResponseInt_ = {
     code?: number;
     data?: number;
+    message?: string;
+  };
+
+  type BaseResponseListTagTreeVo_ = {
+    code?: number;
+    data?: TagTreeVo[];
+    message?: string;
+  };
+
+  type BaseResponseListTagVo_ = {
+    code?: number;
+    data?: TagVo[];
     message?: string;
   };
 
@@ -69,6 +91,16 @@ declare namespace API {
     id?: number;
   };
 
+  type listTagTreeUsingGETParams = {
+    /** tagName */
+    tagName?: string;
+  };
+
+  type listTagUsingGETParams = {
+    /** tagName */
+    tagName?: string;
+  };
+
   type matchUsersUsingGETParams = {
     /** num */
     num?: number;
@@ -100,6 +132,37 @@ declare namespace API {
   type searchUserUsingGETParams = {
     /** username */
     username?: string;
+  };
+
+  type TagAddRequest = {
+    isParent?: number;
+    parentId?: number;
+    tagName?: string;
+  };
+
+  type TagTreeChildVo = {
+    id?: string;
+    text?: string;
+  };
+
+  type TagTreeVo = {
+    children?: TagTreeChildVo[];
+    id?: number;
+    text?: string;
+  };
+
+  type TagUpdateRequest = {
+    id?: number;
+    isParent?: number;
+    parentId?: number;
+    tagName?: string;
+  };
+
+  type TagVo = {
+    id?: number;
+    isParent?: number;
+    parentId?: number;
+    tagName?: string;
   };
 
   type Team = {

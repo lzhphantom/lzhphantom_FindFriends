@@ -54,6 +54,18 @@ export const routes = [
         component: () => import('../pages/UserLoginPage.vue')
     },
     {
+        path: '/admin/tag',
+        name: 'adminTag',
+        title:'管理标签',
+        component: () => import('../pages/TagManagerPage.vue')
+    },
+    {
+        path: '/user/register',
+        name: 'register',
+        title:'注册',
+        component: () => import('../pages/UserRegisterPage.vue')
+    },
+    {
         path: '/search',
         name: 'search',
         title:'搜索',

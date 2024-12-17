@@ -7,7 +7,7 @@
         thumb="https://fastly.jsdelivr.net/npm/@vant/assets/cat.jpeg"
     >
       <template #tag>
-        <van-tag :type="item.status===0?'primary':'danger'">{{teamStatusEnum[item.status]}}</van-tag>
+        <van-tag :type="item.status===0?'primary':item.status===1?'success':'danger'">{{teamStatusEnum[item.status]}}</van-tag>
       </template>
       <template #tags>
         <van-space wrap>

@@ -18,14 +18,20 @@
       />
     </van-cell-group>
     <div style="margin: 16px;">
-      <van-button round block type="primary" native-type="submit">
-        提交
-      </van-button>
+      <van-space direction="vertical" fill>
+        <van-button round block type="primary" native-type="submit">
+          登录
+        </van-button>
+        <van-button round block type="primary" @click="toRegister">
+          没有账号？点我注册
+        </van-button>
+      </van-space>
+
     </div>
   </van-form>
 </template>
 <script setup lang="ts">
-import {useRoute} from "vue-router";
+import {useRoute, useRouter} from "vue-router";
 import {ref} from "vue";
 import {showFailToast, showSuccessToast} from "vant";
 import {doLoginUsingPost} from "../api/userController.ts";
@@ -39,13 +45,16 @@ const onSubmit = async () => {
   const res = await doLoginUsingPost(data.value)
   console.log(res);
   if (res.code === 0 && res.data) {
-    showSuccessToast('登录成功')
     const url = route.query?.redirect as string ?? '/'
     window.location.href = url
   } else {
     showFailToast('登录失败')
   }
 };
+const router = useRouter()
+const toRegister = () => {
+  router.push('/user/register')
+}
 </script>
 <style scoped>
 

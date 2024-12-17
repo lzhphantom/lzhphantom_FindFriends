@@ -8,8 +8,7 @@
         @clear="onSearch"
     >
     </van-search>
-    <van-button type="primary" size="large" @click="doJoinTeam">
-      创建队伍
+    <van-button type="primary" icon="plus" @click="doJoinTeam" class="add-button">
     </van-button>
     <van-tabs v-model:active="active" @change="changeTab">
       <van-tab title="公开" name="public"/>
@@ -61,5 +60,12 @@ onMounted(() => {
 <style scoped>
 #teamPage {
   padding: 20px;
+}
+.add-button {
+  position: fixed;
+  bottom: 60px;
+  right: 12px;
+  border-radius: 50%;
+  z-index: 100;
 }
 </style>
