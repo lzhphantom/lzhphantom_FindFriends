@@ -25,23 +25,24 @@
   </van-form>
 </template>
 <script setup lang="ts">
-import request from "../plugins/request.ts";
-import {useRouter} from "vue-router";
+import {useRoute} from "vue-router";
 import {ref} from "vue";
 import {showFailToast, showSuccessToast} from "vant";
+import {doLoginUsingPost} from "../api/userController.ts";
 
 const data = ref({
   username: '',
   password: ''
 })
-const router = useRouter();
+const route = useRoute();
 const onSubmit = async () => {
-  const res = await request.post('/user/login', data.value)
+  const res = await doLoginUsingPost(data.value)
   console.log(res);
-  if (res.code===0 && res.data){
+  if (res.code === 0 && res.data) {
     showSuccessToast('登录成功')
-    router.push("/")
-  }else {
+    const url = route.query?.redirect as string ?? '/'
+    window.location.href = url
+  } else {
     showFailToast('登录失败')
   }
 };

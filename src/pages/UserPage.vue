@@ -6,15 +6,9 @@
 </template>
 <script setup lang="ts">
 import {onMounted, ref} from "vue";
-import {UserType} from "../models/user";
-import {useRouter} from "vue-router";
-import request from "../plugins/request.ts";
-import {showFailToast} from "vant";
 import {getCurrentUser} from "../services/user.ts";
 
-const user = ref<UserType>({
-})
-const router = useRouter();
+const user = ref<API.User>({})
 
 
 onMounted(async () => {

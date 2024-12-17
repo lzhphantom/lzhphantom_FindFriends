@@ -4,18 +4,21 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --host",
+    "openapi": "node openapi.config.js",
     "build": "vue-tsc -b && vite build",
     "preview": "vite preview"
   },
   "dependencies": {
     "axios": "^1.7.9",
     "dayjs": "^1.11.13",
+    "tslib": "^2.8.1",
     "vant": "^4.9.10",
     "vue": "^3.5.13",
     "vue-router": "^4.5.0"
   },
   "devDependencies": {
+    "@umijs/openapi": "^1.13.0",
     "@vant/auto-import-resolver": "^1.2.1",
     "@vitejs/plugin-vue": "^5.2.1",
     "typescript": "~5.6.2",

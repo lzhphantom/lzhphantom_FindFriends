@@ -1,8 +1,7 @@
-import request from "../plugins/request.ts";
+import {getCurrentUserUsingGet} from "../api/userController.ts";
 
 export const getCurrentUser = async () => {
-    const res = await request.get('/user/currentUser')
-
+    const res = await getCurrentUserUsingGet()
     return res.data
 
 }

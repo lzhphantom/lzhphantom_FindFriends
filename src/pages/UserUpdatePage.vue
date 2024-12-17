@@ -12,29 +12,16 @@
   <van-cell title="性别" is-link @click="edit('gender','性别',user.gender)" :value="user.gender===1?'男':'女'"/>
   <van-cell title="电话" is-link @click="edit('phone','电话',user.phone)" :value="user.phone"/>
   <van-cell title="邮箱" is-link @click="edit('email','邮箱',user.email)" :value="user.email"/>
-  <van-cell title="注册时间" :value="user.createTime?.toLocaleString()"/>
+  <van-cell title="注册时间" :value="dayjs(user.createTime).format('YYYY-MM-DD')"/>
 </template>
 <script setup lang="ts">
 import {onMounted, ref} from "vue";
 import {UserType} from "../models/user";
 import {useRouter} from "vue-router";
-import request from "../plugins/request.ts";
-import {showFailToast} from "vant";
 import {getCurrentUser} from "../services/user.ts";
+import dayjs from "dayjs";
 
-const user = ref<UserType>({
-  id: 1,
-  username: 'admin',
-  loginAccount: 'admin',
-  avatarUrl: 'https://fastly.jsdelivr.net/npm/@vant/assets/cat.jpeg',
-  email: 'admin@qq.com',
-  phone: '123456789',
-  gender: '男',
-  status: 1,
-  createTime: new Date(),
-  tags: ['管理员'],
-  role: 1
-})
+const user = ref<UserType>({})
 const router = useRouter();
 const edit = (key: string, label: string, value: string) => {
   router.push({

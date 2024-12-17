@@ -8,16 +8,15 @@
         @clear="onSearch"
     >
     </van-search>
-    <team-card-list :team-list="teamList" />
+    <team-card-list :team-list="teamList" @reload-list="loadList"/>
   </div>
 </template>
 <script setup lang="ts">
-import {useRouter} from "vue-router";
 import {onMounted, ref} from "vue";
-import request from "../plugins/request.ts";
 import {TeamType} from "../models/team";
 import {showFailToast} from "vant";
 import TeamCardList from "../components/TeamCardList.vue";
+import {listMyJoinTeamUsingGet} from "../api/teamController.ts";
 
 const search = ref({
   searchText:''
@@ -25,15 +24,9 @@ const search = ref({
 const onSearch = () => {
   loadList(search.value)
 }
-const router = useRouter()
-const doJoinTeam = () => {
-  router.push({
-    path: '/team/add'
-  })
-}
 const teamList = ref<TeamType[]>([])
 const loadList = async (payload={}) => {
-  const res = await request.get('/team/list/my/join')
+  const res = await listMyJoinTeamUsingGet(payload)
   if (res.code === 0 && res.data) {
     teamList.value = res.data
   } else {

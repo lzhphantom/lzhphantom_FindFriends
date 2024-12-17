@@ -23,18 +23,13 @@
 import {useRoute} from "vue-router";
 import {onMounted, ref} from "vue";
 import {UserType} from "../models/user";
-import request from "../plugins/request.ts";
-import {Toast} from "vant";
+import {searchUsersByTagsUsingPost} from "../api/userController.ts";
 
 const route = useRoute()
 const {tags} = route.query
 onMounted(async () => {
-  const result = await request.post('/user/search/tags', {
+  const result = await searchUsersByTagsUsingPost( {
     tagList: tags
-  }).then((res) => {
-    return res;
-  }).catch((err) => {
-    Toast.fail('请求是吧')
   })
   result.data.records.forEach(item => {
     item.tags = JSON.parse(item.tags)

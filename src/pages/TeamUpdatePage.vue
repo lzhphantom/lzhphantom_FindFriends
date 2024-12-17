@@ -70,11 +70,11 @@
   </div>
 </template>
 <script setup lang="ts">
-import request from "../plugins/request.ts";
-import {showFailToast, showSuccessToast} from "vant";
+import {showFailToast} from "vant";
 import {onMounted, ref} from "vue";
 import {useRoute, useRouter} from "vue-router";
 import dayjs from "dayjs";
+import {getTeamByIdUsingGet, updateTeamUsingPost} from "../api/teamController.ts";
 
 
 const data = ref({})
@@ -88,9 +88,8 @@ const onConfirm = ({selectedValues}) => {
 };
 const route = useRoute()
 onMounted(async ()=>{
-  const res = await request.get('/team/get', {
-    params:
-        {id: route.query.id}
+  const res = await getTeamByIdUsingGet({
+    id: route.query.id
   })
   if (res.code === 0 && res.data){
     data.value = res.data
@@ -106,7 +105,7 @@ const onSubmit = async () => {
   }
 
   data.value.expireTime = dayjs(data.value.expireTime).format('YYYY-MM-DDTHH:mm:ss')
-  const res = await request.post('/team/update', data.value)
+  const res = await updateTeamUsingPost( data.value)
   if (res.code === 0 && res.data) {
     router.push({
       path: '/team',

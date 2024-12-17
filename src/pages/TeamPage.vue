@@ -11,16 +11,20 @@
     <van-button type="primary" size="large" @click="doJoinTeam">
       创建队伍
     </van-button>
-    <team-card-list :team-list="teamList" />
+    <van-tabs v-model:active="active" @change="changeTab">
+      <van-tab title="公开" name="public"/>
+      <van-tab title="加密" name="encrypted"/>
+    </van-tabs>
+    <team-card-list :team-list="teamList" @reload-list="loadList(search)"/>
   </div>
 </template>
 <script setup lang="ts">
 import {useRouter} from "vue-router";
 import {onMounted, ref} from "vue";
-import request from "../plugins/request.ts";
 import {TeamType} from "../models/team";
 import {showFailToast} from "vant";
 import TeamCardList from "../components/TeamCardList.vue";
+import {listTeamsUsingPost} from "../api/teamController.ts";
 
 const search = ref({
   searchText:''
@@ -34,9 +38,15 @@ const doJoinTeam = () => {
     path: '/team/add'
   })
 }
+const active = ref('public')
+const changeTab = (name: string) => {
+  loadList({
+    status: name === 'public' ? 0 : 2
+  })
+}
 const teamList = ref<TeamType[]>([])
 const loadList = async (payload={}) => {
-  const res = await request.post('/team/list', payload)
+  const res = await listTeamsUsingPost(payload)
   if (res.code === 0 && res.data) {
     teamList.value = res.data
   } else {

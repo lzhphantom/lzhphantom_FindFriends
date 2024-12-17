@@ -70,11 +70,11 @@
   </div>
 </template>
 <script setup lang="ts">
-import request from "../plugins/request.ts";
-import {showFailToast, showSuccessToast} from "vant";
+import {showFailToast} from "vant";
 import {ref} from "vue";
 import {useRouter} from "vue-router";
 import dayjs from "dayjs";
+import {addTeamUsingPost} from "../api/teamController.ts";
 
 const initFormData = {
   description: "",
@@ -102,8 +102,7 @@ const onSubmit = async () => {
   }
 
   data.value.expireTime = dayjs(data.value.expireTime).format('YYYY-MM-DDTHH:mm:ss')
-  const res = await request.post('/team/addTeam', data.value)
-  console.log(res);
+  const res = await addTeamUsingPost(data.value)
   if (res.code === 0 && res.data) {
     router.push({
       path: '/team',

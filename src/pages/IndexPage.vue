@@ -8,20 +8,18 @@
 </template>
 <script setup lang="ts">
 import {onMounted, ref} from "vue";
-import request from "../plugins/request.ts";
-import {showFailToast, showSuccessToast} from "vant";
+import {showFailToast} from "vant";
 import {UserType} from "../models/user";
 import UserCardList from "../components/UserCardList.vue";
+import {matchUsersUsingGet, recommendUsersUsingGet} from "../api/userController.ts";
 
 const matched = ref(false)
 const userList = ref<UserType[]>([])
 
 const recommend = async () => {
-  const result = await request.get('/user/recommend',{
-    params:{
+  const result = await recommendUsersUsingGet({
       pageSize:20,
       pageNum:1
-    }
   })
   result.data.records.forEach(item=>{
     item.tags = JSON.parse(item.tags)
@@ -43,10 +41,8 @@ const doMatch = async () => {
     loading.value = false
     return
   }
-  const res = await request.get('/user/match',{
-    params:{
+  const res = await matchUsersUsingGet({
       num:10
-    }
   })
   if (res.code === 0 && res.data) {
     res.data.forEach(item=>{

@@ -3,7 +3,7 @@ import {routes} from "../config";
 
 
 const router = VueRouter.createRouter({
-    history: VueRouter.createWebHashHistory(),
+    history: VueRouter.createWebHistory(),
     routes
 })
 export default router
