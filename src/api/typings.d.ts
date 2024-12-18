@@ -21,6 +21,12 @@ declare namespace API {
     message?: string;
   };
 
+  type BaseResponseListString_ = {
+    code?: number;
+    data?: string[];
+    message?: string;
+  };
+
   type BaseResponseListTagTreeVo_ = {
     code?: number;
     data?: TagTreeVo[];
@@ -247,6 +253,11 @@ declare namespace API {
     password?: string;
     status?: number;
     userId?: number;
+  };
+
+  type updateUserTagsUsingGETParams = {
+    /** tags */
+    tags?: string[];
   };
 
   type User = {

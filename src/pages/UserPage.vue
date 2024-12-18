@@ -6,7 +6,7 @@
   <div class="user-page-button">
     <van-space direction="vertical" fill>
       <van-button type="danger" size="large" @click="doExit()">退出</van-button>
-      <van-button type="success" size="large" @click="toTagManage()">管理标签</van-button>
+      <van-button v-if="user?.role === 1" type="success" size="large" @click="toTagManage()">管理标签</van-button>
     </van-space>
 
   </div>

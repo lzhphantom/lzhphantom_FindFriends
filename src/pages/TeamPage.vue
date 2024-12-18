@@ -11,6 +11,7 @@
     <van-button type="primary" icon="plus" @click="doJoinTeam" class="add-button">
     </van-button>
     <van-tabs v-model:active="active" @change="changeTab">
+      <van-tab title="所有" name="all"/>
       <van-tab title="公开" name="public"/>
       <van-tab title="加密" name="encrypted"/>
     </van-tabs>
@@ -37,11 +38,16 @@ const doJoinTeam = () => {
     path: '/team/add'
   })
 }
-const active = ref('public')
+const active = ref('all')
 const changeTab = (name: string) => {
-  loadList({
-    status: name === 'public' ? 0 : 2
-  })
+  if (name === 'all'){
+    loadList()
+  }else {
+    loadList({
+      status: name === 'public' ? 0 : 2
+    })
+  }
+
 }
 const teamList = ref<TeamType[]>([])
 const loadList = async (payload={}) => {

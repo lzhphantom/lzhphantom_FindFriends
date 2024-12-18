@@ -25,6 +25,7 @@ import {onMounted, ref} from "vue";
 import {UserType} from "../models/user";
 import {searchUsersByTagsUsingPost} from "../api/userController.ts";
 
+
 const route = useRoute()
 const {tags} = route.query
 onMounted(async () => {

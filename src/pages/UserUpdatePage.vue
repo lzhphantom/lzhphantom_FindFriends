@@ -12,6 +12,7 @@
   <van-cell title="性别" is-link @click="edit('gender','性别',user.gender)" :value="user.gender===1?'男':user.gender===0?'女':'未知'"/>
   <van-cell title="电话" is-link @click="edit('phone','电话',user.phone)" :value="user.phone"/>
   <van-cell title="邮箱" is-link @click="edit('email','邮箱',user.email)" :value="user.email"/>
+  <van-cell title="标签" is-link @click="toTag"/>
   <van-cell title="注册时间" :value="dayjs(user.createTime).format('YYYY-MM-DD')"/>
 
 </template>
@@ -40,7 +41,11 @@ onMounted(async () => {
   user.value = await getCurrentUser();
 })
 
-
+const toTag = () => {
+  router.push({
+    path: '/user/tag'
+  })
+}
 </script>
 <style scoped>
 

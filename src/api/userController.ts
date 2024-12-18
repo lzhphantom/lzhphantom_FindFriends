@@ -136,3 +136,26 @@ export async function updateUserUsingPost(
     ...(options || {}),
   });
 }
+
+/** updateUserTags GET /api/user/update/tags */
+export async function updateUserTagsUsingGet(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.updateUserTagsUsingGETParams,
+  options?: { [key: string]: any }
+) {
+  return request<API.BaseResponseBoolean_>("/api/user/update/tags", {
+    method: "GET",
+    params: {
+      ...params,
+    },
+    ...(options || {}),
+  });
+}
+
+/** getUserTags GET /api/user/user/tags */
+export async function getUserTagsUsingGet(options?: { [key: string]: any }) {
+  return request<API.BaseResponseListString_>("/api/user/user/tags", {
+    method: "GET",
+    ...(options || {}),
+  });
+}
